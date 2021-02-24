@@ -49,14 +49,14 @@ function server_agent(dict: any, a: Agent, cb: (cmd: any) => void): void {
 
 const controller = new AgentController(wss, server_agent);
 
-app.get("/", (req: any, res: any) => {
+app.get("/", (req: express.Request, res: express.Response) => {
     const status = {
         "channels_number": Object.keys(controller.channels).length
     }
     res.json(status);
 });
 
-app.get("/channels/:channelName", (req: any, res: any) => {
+app.get("/channels/:channelName", (req: express.Request, res: express.Response) => {
     const answer = {};
     let channel_name = req.params["channelName"];
     answer["success"] = (channel_name in controller.channels);
@@ -67,7 +67,5 @@ app.get("/channels/:channelName", (req: any, res: any) => {
 });
 
 server.listen(port, () => {
-    console.log("changed things");
-    console.log("changed again");
     console.log(`Listening on ${port}`);
 });
