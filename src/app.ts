@@ -68,5 +68,6 @@ app.get("/channels/:channelName", (req: any, res: any) => {
 
 server.listen(port, () => {
     console.log("changed things");
+    console.log("changed again");
     console.log(`Listening on ${port}`);
 });
