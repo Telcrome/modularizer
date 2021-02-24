@@ -13,6 +13,9 @@
     {
       "type": "docker-build",
       "label": "docker-build",
+      "dependsOn": [
+        "tsc: build - tsconfig.json"
+      ],
       "platform": "node",
       "dockerBuild": {
         "dockerfile": "${workspaceFolder}/Dockerfile",
