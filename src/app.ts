@@ -2,6 +2,10 @@ import express from "express";
 import http from "http";
 import WebSocket from "ws";
 import cors from "cors";
+import "reflect-metadata";
+import { createConnection } from "typeorm";
+
+import { Cmd } from "./entity/Cmd";
 
 import { AgentController } from "./AgentController";
 import { Agent } from "./Agent";
@@ -67,5 +71,11 @@ app.get("/channels/:channelName", (req: express.Request, res: express.Response) 
 });
 
 server.listen(port, () => {
+    createConnection().then(async con => {
+        console.log("DB connection set up")
+        const cmd = new Cmd();
+        cmd.name = "Do";
+        await con.manager.save(cmd);
+    }).catch(err => console.log(err));
     console.log(`Listening on ${port}`);
 });

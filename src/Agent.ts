@@ -28,26 +28,6 @@ export class Agent {
     }
 
     notify(msg: IOutMessage): void {
-        // const obj = {
-        //     "msg_type": msg.msg_type,
-        // };
-
-        // if ("data" in msg) {
-        //     obj["data"] = msg.data;
-        // }
-
-        // if ("cmd" in msg) {
-        //     obj["cmd"] = msg.cmd;
-        // }
-
-        // if ("msg" in msg) {
-        //     obj["msg"] = msg.msg;
-        // }
-
-        // if ("to" in msg) {
-        //     obj["to"] = msg.to;
-        // }
-
         this.ws.send(JSON.stringify(msg));
     }
 
