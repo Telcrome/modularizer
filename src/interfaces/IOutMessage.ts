@@ -5,3 +5,7 @@ export interface IOutMessage {
     msg?: string
     data?: any
 }
+
+export function validateMsg(msg: any): boolean {
+    return true;
+}
