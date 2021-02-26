@@ -2,10 +2,9 @@ import express from "express";
 import http from "http";
 import WebSocket from "ws";
 import cors from "cors";
-import "reflect-metadata";
-import { createConnection } from "typeorm";
 
-import { Cmd } from "./entity/Cmd";
+import { SingletonDB } from "./db";
+import { Command } from "./entity/Command";
 
 import { AgentController } from "./AgentController";
 import { Agent } from "./Agent";
@@ -53,9 +52,14 @@ function server_agent(dict: any, a: Agent, cb: (cmd: any) => void): void {
 
 const controller = new AgentController(wss, server_agent);
 
-app.get("/", (req: express.Request, res: express.Response) => {
+app.get("/", async (req: express.Request, res: express.Response) => {
+    const repository = SingletonDB.getInstance().con.getRepository(Command);
+
+    let asdf = await repository.find();
+
     const status = {
-        "channels_number": Object.keys(controller.channels).length
+        "channels_number": Object.keys(controller.channels).length,
+        "command_count": asdf.length
     }
     res.json(status);
 });
@@ -70,12 +74,20 @@ app.get("/channels/:channelName", (req: express.Request, res: express.Response) 
     res.json(answer);
 });
 
-server.listen(port, () => {
-    createConnection().then(async con => {
-        console.log("DB connection set up")
-        const cmd = new Cmd();
-        cmd.name = "Do";
-        await con.manager.save(cmd);
-    }).catch(err => console.log(err));
-    console.log(`Listening on ${port}`);
-});
+async function main() {
+    const db = SingletonDB.getInstance();
+    await db.init();
+    server.listen(port, async () => {
+        console.log(`Listening on ${port}`);
+
+
+        // const cmd = new Cmd();
+        // cmd.name = "Do";
+        // await con.manager.save(cmd);
+    });
+}
+
+main().catch(err => {
+    console.error(err.stack);
+    process.exit(1);
+})
