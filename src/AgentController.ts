@@ -1,7 +1,7 @@
 import WebSocket from "ws";
 import { CommChannel, ChannelProtectionType, stringToChannelProtectionType } from "./CommChannel";
 import { Agent } from "./Agent";
-import { ICmdDoc } from "./ICmdDoc";
+import { ICmdDoc } from "./interfaces/ICmdDoc";
 
 export class AgentController {
     /**

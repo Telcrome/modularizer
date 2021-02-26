@@ -1,7 +1,7 @@
 import WebSocket from "ws";
 import { CommChannel } from "./CommChannel";
-import { IOutMessage } from "./IOutMessage";
-import { ICmdDoc } from "./ICmdDoc";
+import { IOutMessage } from "./interfaces/IOutMessage";
+import { ICmdDoc } from "./interfaces/ICmdDoc";
 
 export class Agent {
     /**

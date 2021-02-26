@@ -1,9 +1,8 @@
-import WebSocket from "ws";
 import { AgentController } from "./AgentController";
 import { Agent } from "./Agent";
-import { IOutMessage } from "./IOutMessage";
-import { ICmdDoc } from "./ICmdDoc";
-import { IInMessage } from "./IInMessage";
+import { IOutMessage } from "./interfaces/IOutMessage";
+import { ICmdDoc } from "./interfaces/ICmdDoc";
+import { IInMessage } from "./interfaces/IInMessage";
 
 export enum ChannelProtectionType {
     ByIP, ByUserJWT
