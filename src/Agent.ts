@@ -40,14 +40,14 @@ export class Agent {
         }
     }
 
-    message_handler(e: WebSocket.MessageEvent): void {
+    async message_handler(e: WebSocket.MessageEvent): Promise<void> {
         /**
          * Receives commands from the agent to the network.
          * Forwards the command to the channel.
          */
         try {
             let data_obj = JSON.parse(e.data.toString());
-            this.parent_channel.forward_msg(this, data_obj);
+            await this.parent_channel.forward_msg(this, data_obj);
         } catch (error) {
             this.notify({
                 cmd: "ShowError",

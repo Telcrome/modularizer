@@ -3,6 +3,8 @@ import { Agent } from "./Agent";
 import { IOutMessage } from "./interfaces/IOutMessage";
 import { ICmdDoc } from "./interfaces/ICmdDoc";
 import { IInMessage } from "./interfaces/IInMessage";
+import { SingletonDB } from "./db";
+import { Command } from "./entity/Command";
 
 export enum ChannelProtectionType {
     ByIP, ByUserJWT
@@ -115,11 +117,24 @@ export class CommChannel {
         return res;
     }
 
-    forward_msg(sender_agent: Agent, in_msg: IInMessage) {
+    async forward_msg(sender_agent: Agent, in_msg: IInMessage) {
         /**
          * Forwards a command to all recipients that fit the "to"-pattern.
          * Adds an sender-identifier s.t. the worker can address its supervisor.
          */
+        // const cmdrp = SingletonDB.getInstance().con.getRepository(Command);
+
+        const cmd = new Command();
+        cmd.senderId = sender_agent.id;
+        cmd.senderIp = sender_agent.ip;
+        cmd.recipientId = in_msg.to;
+        cmd.channelId = this.name;
+        cmd.data = in_msg.data;
+        cmd.name = in_msg.cmd;
+        cmd.serverTimestamp = new Date();
+        await SingletonDB.getInstance().con.manager.save(cmd);
+
+
         if (in_msg["to"] === "server") {
             // Forward the command to the server
             this.parentController.serverAgentHandler(in_msg, sender_agent, (answer_command) => {

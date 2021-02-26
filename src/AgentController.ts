@@ -56,7 +56,7 @@ export class AgentController {
             }
         }
 
-        ws.onmessage = (event: WebSocket.MessageEvent) => {
+        ws.onmessage = async (event: WebSocket.MessageEvent) => {
             // Process login
             if (!login) {
                 try {
@@ -96,10 +96,8 @@ export class AgentController {
                     });
                 }
             } else {
-                agent.message_handler(event);
+                await agent.message_handler(event);
             }
         };
     }
-
-
 }

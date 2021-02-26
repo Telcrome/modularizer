@@ -55,11 +55,11 @@ const controller = new AgentController(wss, server_agent);
 app.get("/", async (req: express.Request, res: express.Response) => {
     const repository = SingletonDB.getInstance().con.getRepository(Command);
 
-    let asdf = await repository.find();
+    // let asdf = await repository.find();
 
     const status = {
         "channels_number": Object.keys(controller.channels).length,
-        "command_count": asdf.length
+        "command_count": repository.count
     }
     res.json(status);
 });
@@ -77,17 +77,14 @@ app.get("/channels/:channelName", (req: express.Request, res: express.Response) 
 async function main() {
     const db = SingletonDB.getInstance();
     await db.init();
-    server.listen(port, async () => {
+
+    server.listen(port, () => {
         console.log(`Listening on ${port}`);
-
-
-        // const cmd = new Cmd();
-        // cmd.name = "Do";
-        // await con.manager.save(cmd);
     });
 }
 
 main().catch(err => {
+    console.log(err);
     console.error(err.stack);
     process.exit(1);
 })
